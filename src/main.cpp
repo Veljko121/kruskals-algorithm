@@ -3,18 +3,17 @@
 #include <iostream>
 #include <chrono>
 #include "kruskal.hpp"
-#include "kruskal_omp.hpp"
 
 using namespace std;
 
 int main() {
     printf("Generating graph...\n");
-    Graph graph = generate_graph(5000, 1000000);
+    Graph graph = generate_graph(10000, 2500000);
     printf("Generated graph.\n\n");
 
     printf("Sequential...\n");
     auto start = chrono::high_resolution_clock::now();
-    vector<Edge> mst_sequential = kruskal(graph);
+    vector<Edge> mst_sequential = kruskal_sequential(graph);
     auto end = chrono::high_resolution_clock::now();
     auto seq_time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     printf("Time: %ld ms\n\n", seq_time);

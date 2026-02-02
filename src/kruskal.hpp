@@ -8,15 +8,32 @@
 #include "types.hpp"
 #include "disjoint_set.hpp"
 #include "utils.hpp"
+#include "sorting.hpp"
 
 using namespace std;
 
-vector<Edge> kruskal(const Graph& graph) {
+vector<Edge> kruskal_sequential(const Graph& graph) {
     // extract edges and deduplicate
     vector<Edge> edges = extract_edges(graph);
     
     // sort edges
     sequential_sort_edges(edges);
+    
+    // extract vertices
+    vector<string> vertices = extract_vertices(graph);
+    
+    // find MST
+    vector<Edge> mst = find_mst(vertices, edges);
+    
+    return mst;
+}
+
+vector<Edge> kruskal_omp(const Graph& graph) {
+    // extract edges and deduplicate
+    vector<Edge> edges = extract_edges(graph);
+    
+    // sort edges
+    parallel_sort_edges(edges);
     
     // extract vertices
     vector<string> vertices = extract_vertices(graph);

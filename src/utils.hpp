@@ -3,12 +3,13 @@
 #include <random>
 #include <chrono>
 #include <set>
-#include "types.hpp"
 #include <random>
 #include <chrono>
 #include <set>
 #include <iostream>
 #include <algorithm>
+#include <parallel/algorithm>
+#include "types.hpp"
 
 using namespace std;
 
@@ -86,14 +87,6 @@ vector<string> extract_vertices(Graph graph) {
         vertices.push_back(vertex);
     }
     return vertices;
-}
-
-void sequential_sort_edges(vector<Edge> &edges) {
-    sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
-        if (a.weight != b.weight) return a.weight < b.weight;
-        if (a.u != b.u) return a.u < b.u;
-        return a.v < b.v;
-    });
 }
 
 vector<Edge> find_mst(vector<string> vertices, vector<Edge> edges) {
