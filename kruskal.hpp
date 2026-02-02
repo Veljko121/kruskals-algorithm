@@ -10,6 +10,9 @@
 
 using namespace std;
 
+void sequential_sort_edges(vector<Edge> &edges);
+vector<Edge> find_mst(vector<string> vertices, vector<Edge> edges);
+
 vector<Edge> kruskal(const Graph& graph) {
     // extract edges and deduplicate
     vector<Edge> edges;
@@ -23,12 +26,8 @@ vector<Edge> kruskal(const Graph& graph) {
         }
     }
 
-    // sort edges by weight ascending
-    sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
-        if (a.weight != b.weight) return a.weight < b.weight;
-        if (a.u != b.u) return a.u < b.u;
-        return a.v < b.v;
-    });
+    // sort edges
+    sequential_sort_edges(edges);
 
     // extract vertices
     vector<string> vertices;
@@ -36,9 +35,24 @@ vector<Edge> kruskal(const Graph& graph) {
         vertices.push_back(vertex);
     }
 
-    // initialize disjointset
+    // find MST
+    vector<Edge> mst = find_mst(vertices, edges);
+
+    return mst;
+}
+
+void sequential_sort_edges(vector<Edge> &edges) {
+    sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+        if (a.weight != b.weight) return a.weight < b.weight;
+        if (a.u != b.u) return a.u < b.u;
+        return a.v < b.v;
+    });
+}
+
+vector<Edge> find_mst(vector<string> vertices, vector<Edge> edges) {
     DisjointSet disjointSet(vertices);
 
+    // find edges
     vector<Edge> mst;
     for (const Edge& edge : edges) {
         string root_u = disjointSet.find(edge.u);
@@ -49,6 +63,6 @@ vector<Edge> kruskal(const Graph& graph) {
             disjointSet.union_(root_u, root_v);
         }
     }
-
+    
     return mst;
 }
