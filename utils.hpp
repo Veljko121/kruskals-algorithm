@@ -1,3 +1,5 @@
+#pragma once
+
 #include <random>
 #include <chrono>
 #include <set>
@@ -9,8 +11,6 @@
 #include <algorithm>
 
 using namespace std;
-
-Graph generate_graph(unsigned num_of_vertices, unsigned num_of_edges);
 
 Graph generate_graph(unsigned num_of_vertices, unsigned num_of_edges) {
     // these checks ensure that dimensions are valid
@@ -64,4 +64,52 @@ Graph generate_graph(unsigned num_of_vertices, unsigned num_of_edges) {
     }
 
     return graph;
+}
+
+vector<Edge> extract_edges(Graph graph) {
+    vector<Edge> edges;
+    set<tuple<string, string, int>> seen;
+    for (const auto& [vertex, neighbors] : graph) {
+        for (const auto& [neighbor, weight] : neighbors) {
+            if (seen.find({neighbor, vertex, weight}) == seen.end()) {
+                edges.push_back({vertex, neighbor, weight});
+                seen.insert({vertex, neighbor, weight});
+            }
+        }
+    }
+    return edges;
+}
+
+vector<string> extract_vertices(Graph graph) {
+    vector<string> vertices;
+    for (const auto& [vertex, _] : graph) {
+        vertices.push_back(vertex);
+    }
+    return vertices;
+}
+
+void sequential_sort_edges(vector<Edge> &edges) {
+    sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+        if (a.weight != b.weight) return a.weight < b.weight;
+        if (a.u != b.u) return a.u < b.u;
+        return a.v < b.v;
+    });
+}
+
+vector<Edge> find_mst(vector<string> vertices, vector<Edge> edges) {
+    DisjointSet disjointSet(vertices);
+
+    // find edges
+    vector<Edge> mst;
+    for (const Edge& edge : edges) {
+        string root_u = disjointSet.find(edge.u);
+        string root_v = disjointSet.find(edge.v);
+
+        if (root_u != root_v) {
+            mst.push_back(edge);
+            disjointSet.union_(root_u, root_v);
+        }
+    }
+    
+    return mst;
 }
