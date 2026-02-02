@@ -11,17 +11,17 @@ using namespace std;
 int main() {
     printf("Generating graph...\n");
     Graph graph = generate_graph(1000, 1000000);
-    printf("Generated graph.\n");
+    printf("Generated graph.\n\n");
 
-    auto start = chrono::high_resolution_clock::now();
     printf("Sequential...\n");
+    auto start = chrono::high_resolution_clock::now();
     vector<Edge> mst_sequential = kruskal(graph);
     auto end = chrono::high_resolution_clock::now();
     auto seq_time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
     printf("Time: %ld ms\n\n", seq_time);
 
-    start = chrono::high_resolution_clock::now();
     printf("Parallel...\n");
+    start = chrono::high_resolution_clock::now();
     vector<Edge> mst_omp = kruskal_omp(graph);
     end = chrono::high_resolution_clock::now();
     auto omp_time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
