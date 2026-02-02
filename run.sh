@@ -1,1 +1,3 @@
-g++ -o main -fopenmp -D_GLIBCXX_PARALLEL ./src/main.cpp && ./main && rm ./main
+#!/bin/bash
+
+mkdir -p bin && g++ -o ./bin/main -fopenmp ./src/main.cpp && ./bin/main
