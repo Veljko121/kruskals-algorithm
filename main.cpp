@@ -4,13 +4,12 @@
 #include <chrono>
 #include "kruskal.hpp"
 #include "kruskal_omp.hpp"
-#include "utils.hpp"
 
 using namespace std;
 
 int main() {
     printf("Generating graph...\n");
-    Graph graph = generate_graph(1000, 1000000);
+    Graph graph = generate_graph(5000, 1000000);
     printf("Generated graph.\n\n");
 
     printf("Sequential...\n");
