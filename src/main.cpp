@@ -7,23 +7,23 @@
 using namespace std;
 
 int main() {
-    printf("Generating graph...\n");
-    Graph graph = generate_graph(10000, 2500000);
-    printf("Generated graph.\n\n");
+    cout << "Generating graph..." << flush;
+    Graph graph = generate_graph(7000, 1000000);
+    cout << " finished." << endl;
 
-    printf("Sequential...\n");
+    cout << "Sequential..." << flush;
     auto start = chrono::high_resolution_clock::now();
     vector<Edge> mst_sequential = kruskal_sequential(graph);
     auto end = chrono::high_resolution_clock::now();
     auto seq_time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    printf("Time: %ld ms\n\n", seq_time);
+    cout << " finished, time: " << seq_time << " ms"<< endl;
 
-    printf("Parallel...\n");
+    cout << "Parallel..." << flush;
     start = chrono::high_resolution_clock::now();
     vector<Edge> mst_omp = kruskal_omp(graph);
     end = chrono::high_resolution_clock::now();
     auto omp_time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    printf("Time: %ld ms\n\n", omp_time);
+    cout << " finished, time: " << omp_time << " ms"<< endl;
 
     printf("Speedup: %.2fx\n", (double)seq_time / omp_time);
 
