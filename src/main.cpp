@@ -1,7 +1,7 @@
-#include "types.hpp"
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include "types.hpp"
 #include "kruskal.hpp"
 
 using namespace std;
